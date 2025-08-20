@@ -20,6 +20,23 @@ export default function Mathfield(props) {
     if (mf) mathfield.current = mf;
   };
 
+  React.useEffect(() => {
+    // faqat shu componentga tegishli math-fieldni olamiz
+    const el = mathfield.current;
+    if (!el) return;
+
+    const handleFocus = () => {
+      mathVirtualKeyboard.layouts = ["numeric", "symbols"];
+      mathVirtualKeyboard.visible = true;
+    };
+
+    el.addEventListener("focus", handleFocus);
+
+    return () => {
+      el.removeEventListener("focus", handleFocus);
+    };
+  }, []);
+
   return (
     <div>
       <math-field
