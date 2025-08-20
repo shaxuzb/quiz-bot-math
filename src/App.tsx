@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MathField from "./components/fields/Mathfield";
+import MathField from "./components/fields/MathField";
 export default function App() {
   const [question, setQuestion] = useState("(3x+6)^2");
   return (
