@@ -136,3 +136,27 @@
     display: none;
   }
 }
+
+.math-field-container math-field {
+  display: block;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  min-height: 40px;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.math-field-container math-field:focus-within {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Ensure virtual keyboard appears on mobile */
+@media (pointer: coarse) {
+  math-field::part(virtual-keyboard-toggle) {
+    display: block;
+  }
+}
