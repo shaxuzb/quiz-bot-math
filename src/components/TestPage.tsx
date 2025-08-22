@@ -1,48 +1,19 @@
 import { useState, useEffect } from "react";
 import MathField from "./fields/MathField";
-
-interface Question {
-  questionNumber: number;
-  answerType: number;
-  options: string[] | null;
-}
-
-interface TestData {
-  canPass: boolean;
-  quantity: number;
-  questions: Question[];
-}
+import type { TestData } from "@/types/interface";
+import { $api } from "@/api/AxiosSevice";
 
 interface TestPageProps {
   onBack?: () => void;
+  test: TestData | null;
   onLogout?: () => void;
 }
 
-export default function TestPage({ onLogout }: TestPageProps) {
+export default function TestPage({ test, onLogout }: TestPageProps) {
   const [currentAnswers, setCurrentAnswers] = useState<{
     [key: number]: string;
   }>({});
   const [isCompleted, setIsCompleted] = useState(false);
-
-  // Sample test data based on your JSON
-  const testData: TestData = {
-    canPass: true,
-    quantity: 45,
-    questions: [
-      // Questions 1-35: Multiple choice (answerType: 1)
-      ...Array.from({ length: 35 }, (_, i) => ({
-        questionNumber: i + 1,
-        answerType: 1,
-        options: ["A", "B", "C", "D"],
-      })),
-      // Questions 36-45: Text input (answerType: 0)
-      ...Array.from({ length: 10 }, (_, i) => ({
-        questionNumber: i + 36,
-        answerType: 0,
-        options: null,
-      })),
-    ],
-  };
 
   const handleAnswerChange = (questionNumber: number, answer: string) => {
     setCurrentAnswers((prev) => ({
@@ -50,9 +21,24 @@ export default function TestPage({ onLogout }: TestPageProps) {
       [questionNumber]: answer,
     }));
   };
+  console.log(currentAnswers);
 
-  const handleComplete = () => {
-    setIsCompleted(true);
+  const handleComplete = async () => {
+    if (Object.values(currentAnswers).length !== test?.quantity) {
+      return alert("Iltimos testni to'liq yeching");
+    }
+    try {
+      const { data } = await $api.post("/bottestresult/submit", {
+        testId: test?.testId,
+        telegramId: test?.telegramId,
+        answers: currentAnswers,
+      });
+      if (data) {
+        setIsCompleted(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // Auto redirect after 2 seconds when completed
@@ -110,7 +96,7 @@ export default function TestPage({ onLogout }: TestPageProps) {
 
           {/* Questions */}
           <div className="p-6 space-y-6">
-            {testData.questions.map((question) => (
+            {test?.questions.map((question) => (
               <div key={question.questionNumber} className="space-y-3">
                 {question.answerType === 1 ? (
                   // Multiple choice question

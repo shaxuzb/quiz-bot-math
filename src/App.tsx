@@ -1,24 +1,18 @@
 import { useState } from "react";
 import LoginPage from "./components/LoginPage";
 import TestPage from "./components/TestPage";
+import type { TestData } from "./types/interface";
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState("");
-
-  const handleLogin = (id: string) => {
-    setCurrentUser(id);
-    setIsLoggedIn(true);
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState<TestData | null>(null);
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    setCurrentUser("");
+    setIsLoggedIn(null);
   };
 
   if (isLoggedIn) {
-    return <TestPage onLogout={handleLogout} />;
+    return <TestPage test={isLoggedIn} onLogout={handleLogout} />;
   }
 
-  return <LoginPage onLogin={handleLogin} />;
+  return <LoginPage setIsLoggedIn={setIsLoggedIn} />;
 }
