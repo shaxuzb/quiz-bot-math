@@ -29,7 +29,7 @@ export default function LoginPage({ setIsLoggedIn }: LoginPageProps) {
       const { data } = await $api.get("bottest/check-access", {
         params: {
           code: testId,
-          telegramId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+          telegramId: window.Telegram.WebApp.initDataUnsafe.user?.id ?? 0,
         },
       });
 
@@ -38,7 +38,7 @@ export default function LoginPage({ setIsLoggedIn }: LoginPageProps) {
           setIsLoggedIn({
             ...data,
             testId: testId,
-            telegramId: window.Telegram.WebApp.initDataUnsafe.user?.id,
+            telegramId: window.Telegram.WebApp.initDataUnsafe.user?.id ?? 0,
           });
           setLoading(false);
           setError("");
