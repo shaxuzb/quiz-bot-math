@@ -9,6 +9,10 @@ export default function App() {
   const handleLogout = () => {
     setIsLoggedIn(null);
   };
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.expand();
+  }
+  window.Telegram.WebApp.ready();
 
   if (isLoggedIn) {
     return <TestPage test={isLoggedIn} onLogout={handleLogout} />;

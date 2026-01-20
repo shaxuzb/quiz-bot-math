@@ -26,7 +26,7 @@ export default function Mathfield(props) {
     if (!el) return;
 
     const handleFocus = () => {
-      mathVirtualKeyboard.layouts = ["numeric", "symbols"];
+      mathVirtualKeyboard.layouts = ["numeric", "symbols", "alphabetic"];
       mathVirtualKeyboard.visible = true;
     };
 

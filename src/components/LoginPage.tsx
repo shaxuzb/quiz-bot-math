@@ -13,6 +13,7 @@ declare global {
         expand(): unknown;
         initDataUnsafe: any;
         close(): unknown;
+        ready(): unknown;
         initData: string;
       };
     };
@@ -50,7 +51,9 @@ export default function LoginPage({ setIsLoggedIn }: LoginPageProps) {
       }
     } catch (err) {
       setLoading(false);
-      setError("Test Id si noto'g'ri terildi");
+      console.log(err);
+
+      setError((err as any).response.data.detail);
     }
   };
 

@@ -2,6 +2,7 @@ export interface TestQuestionData {
   answerType: number;
   options: string[] | null;
   questionNumber: number;
+  partIndex: number;
 }
 export interface TestData {
   canPass: boolean;
